@@ -18,8 +18,9 @@ model = Ebanko()
 def predict():
     data = request.get_json(force=True)
     text = data['text']
+    temp = data['temp']
 
-    result = model.toxify(text)
+    result = model.toxify(text, temp)
 
     return jsonify({
         "toxified": result

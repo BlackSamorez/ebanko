@@ -8,13 +8,14 @@ class Ebanko:
         self.tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/ruT5-base")
         self.model = AutoModelForSeq2SeqLM.from_pretrained("model").to(DEVICE)
     
-    def toxify(self, context, temp=0.5):
+    def toxify(self, context, temp=1.5):
         prefix_tokens = self.prepareInput(context).to(DEVICE)
         
         suffix_tokens = self.model.generate(prefix_tokens,
+                                            min_length=len(prefix_tokens) + 5,
                                             do_sample=True,
-                                            top_k=10,
-                                            temperature=1.5)[0].cpu()
+                                            top_k=5,
+                                            temperature=temp)[0].cpu()
             
         return self.prepareOutput(suffix_tokens)
     

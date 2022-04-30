@@ -17,9 +17,9 @@ model = Ebanko()
 @metrics.counter("api_invocations_total", "number of invocations")
 def predict():
     data = request.get_json(force=True)
-    text = torch.tensor(data['data'])
+    text = data['text']
 
-    result = model(text)
+    result = model.toxify(text)
 
     return jsonify({
         "toxified": result

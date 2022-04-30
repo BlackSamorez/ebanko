@@ -1,19 +1,15 @@
 import torch
 
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 DEVICE = "cpu"
 
-class Bot:
+class Ebanko:
     def __init__(self):
         self.tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/ruT5-base")
-        self.model = AutoModelForCausalLM.from_pretrained("model").to(DEVICE)
-        
-    def getResponses(self, context, n = 1, temp=0.5):
-        return [self.getResponse(context, temp=temp) for _ in range(n)]
-
-    def getResponse(self, context, temp=0.5):
-        prefix_tokens = self.prepareInput(context)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained("model").to(DEVICE)
+    
+    def toxify(self, context, temp=0.5):
+        prefix_tokens = self.prepareInput(context).to(DEVICE)
         
         suffix_tokens = self.model.generate(prefix_tokens,
                                             do_sample=True,

@@ -3,10 +3,8 @@ version: '3.3'
 services:
   app:
     build:
-      dockerfile: Dockerfile.production
-      context: .
-    ports:
-      - 8080:80
+      dockerfile: Dockerfile
+      context: app
 
   prom:
     image: prom/prometheus:v2.27.1
@@ -37,6 +35,11 @@ services:
     command: -nginx.scrape-uri=http://app:80/stub_status
     ports:
       - 9113:9113
+
+  bot:
+    build:
+      dockerfile: Dockerfile
+      context: bot
 
 volumes:
   # store prom metrics between runs

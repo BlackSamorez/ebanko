@@ -1,3 +1,3 @@
 from transformers import AutoTokenizer
 
-tokenizer = AutoTokenizer.from_pretrained("sberbank-ai/ruT5-base")
+tokenizer = AutoTokenizer.from_pretrained("Grossmend/rudialogpt3_medium_based_on_gpt2")

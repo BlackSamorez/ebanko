@@ -11,22 +11,25 @@ class Ebanko:
         self.tokenizer = AutoTokenizer.from_pretrained("Grossmend/rudialogpt3_medium_based_on_gpt2")
         self.model = AutoModelForCausalLM.from_pretrained("model").to(DEVICE)
         self.nlp = spacy.load("ru_core_news_sm")
-    
+
     def toxify(self, context, temp=1.0):
         prefix_tokens = self.prepareInput(context).to(DEVICE)
 
         suffix_tokens = self.model.generate(prefix_tokens,
-                                            bad_words_ids=[[self.tokenizer.pad_token_id]],
-                                            max_length=len(prefix_tokens) + 32,
-                                            do_sample=True,
-                                            temperature=temp).cpu()[:, prefix_tokens.shape[-1]:][0]
-            
-        toxified = self.prepareOutput(suffix_tokens)
+                                            max_length=len(input_ids) + 32,
+                                            exponential_decay_length_penalty=(len(input_ids) + 28, 0.8),
+                                            bad_words_ids=[[tokenizer.pad_token_id]],
+                                            force_words_ids=[[11649], [11649]],
+                                            repetition_penalty=10.,
+                                            do_sample=True).cpu()[:, prefix_tokens.shape[-1]:][0]
+
+        toxified = self.prepareOutput(suffix_tokens) 
 
         return toxified
-    
+
     def prepareInput(self, context):
-        context = context + " Что скажешь?" + self.tokenizer.eos_token +  "|1|2|"
+        prompt = ", a?"
+        context = context + prompt + self.tokenizer.eos_token +  "|1|2|"
         return self.tokenizer.encode(context, return_tensors='pt')
         
     def prepareOutput(self, tokens):

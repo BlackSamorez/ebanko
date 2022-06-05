@@ -12,11 +12,17 @@ Container network is run with [docker-compose](https://docs.docker.com/compose/)
 
 ### How to run
 * Insert your bot's token inside [bot.py](https://github.com/BlackSamorez/ebanko/blob/main/app/bot/bot.py)
+* Download the model (see **Availability**) and place it in ```app/app/model```
 * From ```app``` run:
 ```
 docker-compose up --build
 ```
 No gpu is needed
+
+### Availability
+
+Finetuned model is availbale at [huggingface](https://huggingface.co/BlackSamorez/rudialogpt3_medium_based_on_gpt2_2ch).
+Dataset is also available [there](https://huggingface.co/datasets/BlackSamorez/2ch_b_dialogues).
 
 ### Inference speedup
 * None (for now)

@@ -1,7 +1,7 @@
 # ebanko
 
 ### Who is ebanko?
-Ebanko is a [telegram bot](https://t.me/toxic_ebanko_bot) whose purpose is to toxify messages
+Ebanko is a conversational [telegram bot](https://t.me/toxic_ebanko_bot) trained on **2ch.hk/b/**
 
 ### Infrastructure
 Container network is run with [docker-compose](https://docs.docker.com/compose/). Containers include:

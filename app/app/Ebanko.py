@@ -16,8 +16,8 @@ class Ebanko:
         prefix_tokens = self.prepareInput(context).to(DEVICE)
 
         suffix_tokens = self.model.generate(prefix_tokens,
-                                            max_length=len(input_ids) + 32,
-                                            exponential_decay_length_penalty=(len(input_ids) + 28, 0.8),
+                                            max_length=len(prefix_tokens) + 32,
+                                            exponential_decay_length_penalty=(len(prefix_tokens) + 28, 0.8),
                                             bad_words_ids=[[tokenizer.pad_token_id]],
                                             force_words_ids=[[11649], [11649]],
                                             repetition_penalty=10.,

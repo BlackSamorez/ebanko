@@ -25,12 +25,12 @@ logger.addHandler(fh)
 
 TEMP = 1.5
 
-if not exists("/persistent/perc.json"):
+if not exists("/persistent/bot/perc.json"):
     logger.info("New perc")
     PERCENTAGES = {}
 else:
     logger.info("Loading perc")
-    with open("/persistent/perc.json", "r") as file:
+    with open("/persistent/bot/perc.json", "r") as file:
         PERCENTAGES = dict(load(file))
     PERCENTAGES = {int(key): value for key, value in PERCENTAGES.items()}
 
@@ -60,7 +60,6 @@ async def toxify_groups(update: Update, context: CallbackContext):
         PERCENTAGES[update.effective_chat.id] = 0.1
     perc = PERCENTAGES[update.effective_chat.id]
 
-    logger.info("Entering group toxification")
     if random() < perc:
         try:
             reply = requests.post(BACKEND_ADDRESS, json={"text": update.message.text, "temp": TEMP}).json()["toxified"]
@@ -104,10 +103,8 @@ def saver():
     logger.info("Starting saver")
     sleep(10)
     while True:
-        logger.info("Saving")
-        with open("perc", "w") as file:
+        with open("/persistent/bot/perc.json", "w") as file:
             dump(PERCENTAGES, file)
-        logger.info("Saved")
         sleep(10)
 
 if __name__ == "__main__":

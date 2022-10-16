@@ -8,11 +8,9 @@ services:
 
   prom:
     image: prom/prometheus:v2.27.1
-    ports:
-      - 9090:9090
     volumes:
       - ./prom/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data:/prometheus
+      - ./persistent/prometheus:/prometheus
 
   grafana:
     image: grafana/grafana:7.5.7
@@ -21,27 +19,20 @@ services:
     volumes:
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/config.ini:/etc/grafana/config.ini
-      - grafana_data:/var/lib/grafana
+      - ./persistent/grafana_data:/var/lib/grafana
 
   telegraf:
     image: telegraf:1.8
     volumes:
       - ./monitor/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    ports:
-      - 9100:9100
 
   nginx_metrics:
     image: nginx/nginx-prometheus-exporter:0.10.0
-    command: -nginx.scrape-uri=http://app:80/stub_status
-    ports:
-      - 9113:9113
+    command: -nginx.scrape-uri=http://app:80/stub_status3
 
   bot:
     build:
       dockerfile: Dockerfile
       context: bot
-
-volumes:
-  # store prom metrics between runs
-  prometheus_data: {}
-  grafana_data: {}
+    volumes:
+      - ./persistent/bot:/persistent/bot

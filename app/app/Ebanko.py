@@ -1,5 +1,4 @@
 import torch
-import spacy
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 DEVICE = "cpu"
@@ -8,9 +7,8 @@ torch.set_num_threads(4)
 
 class Ebanko:
     def __init__(self):
-        self.tokenizer = AutoTokenizer.from_pretrained("Grossmend/rudialogpt3_medium_based_on_gpt2")
+        self.tokenizer = AutoTokenizer.from_pretrained("BlackSamorez/rudialogpt3_medium_based_on_gpt2_2ch")
         self.model = AutoModelForCausalLM.from_pretrained("model").to(DEVICE)
-        self.nlp = spacy.load("ru_core_news_sm")
 
     def toxify(self, context, temp=1.0):
         prefix_tokens = self.prepareInput(context).to(DEVICE)

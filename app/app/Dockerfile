@@ -19,6 +19,5 @@ COPY model/pytorch_model.bin model/config.json /app/model/
 COPY LoadTokenizer.py /app/
 RUN python3 LoadTokenizer.py
 COPY server.py gunicorn.py Ebanko.py /app/
-RUN python -m spacy download ru_core_news_sm
 
 ENTRYPOINT ["supervisord", "-c", "/etc/supervisord.conf"]
